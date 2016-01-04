@@ -2,7 +2,9 @@
     "name": "francium/diffsocket",
     "description": "A PHP Library for serving Multiple WebSocket Services in a single server",
     "type": "vcs",
+    "keywords": ["WebSockets", "Server", "Ratchet", "Sockets"]
     "require": {
+        "php": ">=5.3.9",
         "cboden/ratchet": "dev-master"
     },
     "require-dev": {
@@ -15,5 +17,10 @@
             "email": "subins2000@gmail.com"
         }
     ],
-    "minimum-stability": "dev"
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-4": {
+            "Fr\\DiffSocket\\": "src/DiffSocket"
+        }
+    }
 }
