@@ -17,12 +17,6 @@
             "email": "subins2000@gmail.com"
         }
     ],
-    "repositories" : [
-      {
-          "type": "vcs",
-          "url": "https://github.com/subins2000/diffsocket.git"
-      }
-    ],
     "minimum-stability": "dev",
     "autoload": {
         "psr-4": {
