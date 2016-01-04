@@ -2,12 +2,9 @@
     "name": "francium/diffsocket",
     "description": "A PHP Library for serving Multiple WebSocket Services in a single server",
     "type": "vcs",
-    "keywords": ["WebSockets", "Server", "Ratchet", "Sockets"]
+    "keywords": ["WebSockets", "Server", "Ratchet", "Sockets"],
     "require": {
         "php": ">=5.3.9",
-        "cboden/ratchet": "dev-master"
-    },
-    "require-dev": {
         "cboden/ratchet": "dev-master"
     },
     "license": "Apache 2.0",
