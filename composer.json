@@ -1,0 +1,19 @@
+{
+    "name": "francium/diffsocket",
+    "description": "A PHP Library for serving Multiple WebSocket Services in a single server",
+    "type": "vcs",
+    "require": {
+        "cboden/ratchet": "dev-master"
+    },
+    "require-dev": {
+        "cboden/ratchet": "dev-master"
+    },
+    "license": "Apache 2.0",
+    "authors": [
+        {
+            "name": "subins2000",
+            "email": "subins2000@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev"
+}
