@@ -1,5 +1,5 @@
 <?php 
-namespace Fr\DiffSocket;
+namespace Fr;
 
 class DiffSocket{
 
@@ -7,6 +7,8 @@ class DiffSocket{
     
   }
   
-  public function 
+  public function addServer(){
+  
+  }
 
 }
