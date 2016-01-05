@@ -1,27 +1,32 @@
 <?php
+namespace Fr\DiffSocket;
+
 use Ratchet\MessageComponentInterface;
 use Ratchet\ConnectionInterface;
 
-class BaseServer implements MessageComponentInterface {
-  private $servers = array(
-    "text-chat" => "TextChat",
-    "voice-chat" => "VoiceChat",
-    "advanced-chat" => "AdvancedChat",
-    "pi" => "Pi"
-  );
+class Server implements MessageComponentInterface {
+  
+  /**
+   * Service name + (class name, class path)
+   */
+  public static $servers = array();
   private $obj = array();
   public $clients = array();
 	
 	public function onOpen(ConnectionInterface $conn) {
     $this->getService($conn);
     
-    if(isset($_GET['service']) && isset($this->servers[$_GET['service']])){
-      if(!isset($this->obj[$_GET['service']])){
-        require_once __DIR__ . "/servers/class.{$_GET['service']}.php";
-        $className = $this->servers[$_GET['service']] . "Server";
-        $this->obj[$_GET['service']] = new $className;
+    if(isset($_GET['service']) && isset(self::$servers[$_GET['service']])){
+      $service = $_GET['service'];
+      $server = self::$servers[$service];
+      
+      if(!isset($this->obj[$service])){
+        require_once $server[1];
+        
+        $className = $server[0];
+        $this->obj[$service] = new $className;
       }
-      $this->obj[$_GET['service']]->onOpen($conn);
+      $this->obj[$service]->onOpen($conn);
       
       $this->clients[$conn->resourceId] = $conn;
     }else{
