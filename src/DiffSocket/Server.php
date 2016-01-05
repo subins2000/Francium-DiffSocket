@@ -16,6 +16,8 @@ class Server implements MessageComponentInterface {
 	public function onOpen(ConnectionInterface $conn) {
     $this->getService($conn);
     
+    var_dump(self::$servers);
+    var_dump($_GET['service']);
     if(isset($_GET['service']) && isset(self::$servers[$_GET['service']])){
       $service = $_GET['service'];
       $server = self::$servers[$service];

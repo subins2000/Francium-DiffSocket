@@ -42,8 +42,7 @@ class DiffSocket{
       /**
        * 
        */
-      Fr\DiffSocket\Server::$servers = $this->servers;
-      require_once __DIR__ . "/server.php";
+      \Fr\DiffSocket\Server::$servers = $this->servers;
       $this->startServer();
     }
   }
@@ -58,20 +57,18 @@ class DiffSocket{
   }
 
   public function startServer(){
-    if(isset($startNow)){
-      $ip = $this->config['server']['host'];
-      $port = $this->config['server']['port'];
-      
-      $server = IoServer::factory(
-        new HttpServer(
-          new WsServer(
-            new BaseServer()
-          )
-        ),
-        $port,
-        $ip
-      );
-      $server->run();
-    }
+    $ip = $this->config['server']['host'];
+    $port = $this->config['server']['port'];
+
+    $server = IoServer::factory(
+      new HttpServer(
+        new WsServer(
+          new \Fr\DiffSocket\Server()
+        )
+      ),
+      $port,
+      $ip
+    );
+    $server->run();
   }
 }
