@@ -2,6 +2,14 @@
 
 A PHP Library for serving Multiple WebSocket Services using a **single port**.
 
+Normally, if you want to run multiple services, you would have to run WS server in different ports. With DiffSocket, you can use a single port for diffeent services.
+
+## Installation
+
+```bash
+composer require francium/diffsocket
+```
+
 [Tutorial & Documentation](http://subinsb.com/francium-diffsocket)
 
 ## Why don't I use different ports for different services ?
