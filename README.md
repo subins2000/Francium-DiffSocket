@@ -1,6 +1,6 @@
 # DiffSocket
 
-A PHP Library for serving Multiple WebSocket Services in a single server
+A PHP Library for serving Multiple WebSocket Services using a **single port**.
 
 [Tutorial & Documentation](http://subinsb.com/francium-diffsocket)
 
@@ -12,8 +12,9 @@ I have created DiffSocket, because my WS server is hosted in OpenShift and would
 
 ## Examples
 
-These different services are provided through a single WebSocket port :
+These different services are provided through a single WebSocket port (ws-subins.rhcloud.com:8000) :
 
 * [Finding Value Of Pi](http://demos.subinsb.com/pi/)
 * [Advanced Live Group Chat With PHP, jQuery & WebSocket](http://demos.subinsb.com/php/advanced-chat-websocket/)
 * [Live Group Chat With PHP, jQuery & WebSocket](http://demos.subinsb.com/php/websocketChat)
+
