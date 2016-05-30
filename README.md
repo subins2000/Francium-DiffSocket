@@ -12,7 +12,7 @@ Normally, if you want to run multiple services, you would have to run Web Socket
 composer require francium/diffsocket
 ```
 
-[Tutorial & Documentation](http://subinsb.com/francium-diffsocket)
+[Tutorial](http://subinsb.com/run-multiple-websocket-services-on-same-port)
 
 ## Why don't I use different ports for different services ?
 
