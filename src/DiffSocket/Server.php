@@ -9,28 +9,35 @@ class Server implements MessageComponentInterface {
   /**
    * Service name + (class name, class path)
    */
-  public static $servers = array();
+  public static $services = array();
+  
+  /**
+   * Instances of Services
+   */
   private $obj = array();
+  
+  /**
+   * Array of connected clients' ConnectionInterface Object
+   */
   public $clients = array();
 	
 	public function onOpen(ConnectionInterface $conn) {
     $this->getService($conn);
     
-    var_dump(self::$servers);
-    var_dump($_GET['service']);
-    if(isset($_GET['service']) && isset(self::$servers[$_GET['service']])){
-      $service = $_GET['service'];
-      $server = self::$servers[$service];
+    $service = $this->getService($conn);
+    if($service !== null){
+      $classFile = self::$services[$service];
       
       if(!isset($this->obj[$service])){
-        require_once $server[1];
+        require_once $classFile;
         
-        $className = $server[0];
+        $className = "Fr\\DiffSocket\\Service\\" . self::getClassName($classFile);
         $this->obj[$service] = new $className;
       }
       $this->obj[$service]->onOpen($conn);
       
       $this->clients[$conn->resourceId] = $conn;
+      return true;
     }else{
       $conn->close();
       return false;
@@ -38,41 +45,71 @@ class Server implements MessageComponentInterface {
 	}
 
 	public function onMessage(ConnectionInterface $conn, $data) {
-		$this->getService($conn);
-    return isset($this->obj[$_GET['service']]) ? $this->obj[$_GET['service']]->onMessage($conn, $data) : "";
+		echo "ccc";
+    $service = $this->getService($conn);
+    return $service !== null ? $this->obj[$service]->onMessage($conn, $data) : "";
 	}
 
 	public function onClose(ConnectionInterface $conn) {
-		$this->getService($conn);
+		$service = $this->getService($conn);
     
     if(isset($this->clients[$conn->resourceId])){
 			unset($this->clients[$conn->resourceId]);
 		}
     
-    if(isset($_GET['service'])){
-      return isset($this->obj[$_GET['service']]) ? $this->obj[$_GET['service']]->onClose($conn) : "";
+    if($service !== null){
+      return $this->obj[$service]->onClose($conn);
     }
 	}
 
 	public function onError(ConnectionInterface $conn, \Exception $e) {
-		$this->getService($conn);
+		$service = $this->getService($conn);
     
     if(isset($this->clients[$conn->resourceId])){
 			unset($this->clients[$conn->resourceId]);
 		}
     
-    return isset($this->obj[$_GET['service']]) ? $this->obj[$_GET['service']]->onError($conn, $e) : "";
+    if($service !== null){
+      return $this->obj[$service]->onError($conn, $e);
+    }
 	}
   
+  /**
+   * Return service if it's valid, else NULL
+   */
   public function getService(ConnectionInterface $conn){
-    $querystring = $conn->WebSocket->request->getQuery();
-    $_GET['service'] = explode("=", $querystring);
-    
-    if(isset($_GET['service'][1])){
-      $_GET['service'] = $_GET['service'][1];
-    }else{
-      unset($_GET['service']);
-    }
+    $query = $conn->WebSocket->request->getQuery();
+    return isset(self::$services[$query["service"]]) ? $query["service"] : null;
   }
+  
+  public static function getClassName($file){
+    $fp = fopen($file, 'r');
+    $class = $buffer = '';
+    $i = 0;
+    
+    if(!$fp)
+      return null;
+
+    while (!$class) {
+      if (feof($fp)) break;
+  
+      $buffer .= fread($fp, 512);
+      $tokens = token_get_all($buffer);
+  
+      if (strpos($buffer, '{') === false) continue;
+  
+      for (;$i<count($tokens);$i++) {
+        if ($tokens[$i][0] === T_CLASS) {
+          for ($j=$i+1;$j<count($tokens);$j++) {
+            if ($tokens[$j] === '{') {
+                $class = $tokens[$i+2][1];
+            }
+          }
+        }
+      }
+    }
+    return $class;
+  }
+  
 }
 ?>

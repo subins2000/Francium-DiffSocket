@@ -14,18 +14,14 @@ class DiffSocket{
     "server" => array(
       "host" => "127.0.0.1",
       "port" => "9000"
-    )
+    ),
+    "services" => array()
   );
 
   /**
    * The conifg storing array
    */
   private $config = array();
-  
-  /**
-   * Service name + (class name, class path)
-   */
-  private $servers = array();
 
   /**
    * Init
@@ -38,25 +34,24 @@ class DiffSocket{
    * Run WS server
    */
   public function run(){
-    if(count($this->servers) !== 0){
+    if(!empty($this->config["services"])){
       /**
-       * 
+       * Start the server
        */
-      \Fr\DiffSocket\Server::$servers = $this->servers;
+      \Fr\DiffSocket\Server::$services = $this->config["services"];
       $this->startServer();
     }
   }
   
   /**
-   * $path - Path to class file
-   * $name - Class Name
-   * $service - The $_GET param to access the service
+   * @param str $service The $_GET param to access the service
+   * @param str $path Path to class file
    */
-  public function addServer($service, $name, $path){
-    $this->servers[$service] = array($name, $path);
+  public function addService($service, $path){
+    $this->config["services"][$service] = realpath($path);
   }
 
-  public function startServer(){
+  private function startServer(){
     $ip = $this->config['server']['host'];
     $port = $this->config['server']['port'];
 
@@ -69,6 +64,7 @@ class DiffSocket{
       $port,
       $ip
     );
+    echo "Server started on $ip:$port\n";
     $server->run();
   }
 }
