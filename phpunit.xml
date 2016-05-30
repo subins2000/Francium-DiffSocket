@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit colors="true" bootstrap="vendor/autoload.php">
+    <testsuites>
+        <testsuite name="Application Test Suite">
+            <directory suffix=".php">./tests/</directory>
+            <exclude>./tests/start-server.php</exclude>
+            <exclude>./tests/services</exclude>
+        </testsuite>
+    </testsuites>
+    <php>
+      <var name="ip" value="127.0.0.1"/>
+      <var name="port" value="8000"/>
+    </php>
+</phpunit>
