@@ -45,7 +45,6 @@ class Server implements MessageComponentInterface {
 	}
 
 	public function onMessage(ConnectionInterface $conn, $data) {
-		echo "ccc";
     $service = $this->getService($conn);
     return $service !== null ? $this->obj[$service]->onMessage($conn, $data) : "";
 	}

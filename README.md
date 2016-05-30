@@ -82,7 +82,7 @@ DiffSocket uses [Ratchet](https://github.com/cboden/ratchet) for the WebSocket s
 You may also add services as an array when the object is made. Like so :
 
 ```php
-$DF = new Fr\DiffSocket(array(
+$DS = new Fr\DiffSocket(array(
   "server" => array(
     "host" => "127.0.0.1",
     "port" => "8000"

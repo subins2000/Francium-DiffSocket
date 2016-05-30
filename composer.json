@@ -25,5 +25,5 @@
             "Fr\\DiffSocket\\": "src/DiffSocket"
         }
     },
-    "minimum-stability": "dev"
+    "minimum-stability": "beta"
 }
