@@ -34,14 +34,11 @@ class Server implements MessageComponentInterface {
     if($service !== null){
       $classFile = self::$services[$service];
       
-      /**
-       * Remove already existing object for debugging
-       */
-      if($this->debug && isset($this->obj[$service]))
-        unset($this->obj[$service]);
-      
       if(!isset($this->obj[$service])){
         require_once $classFile;
+        
+        if($this->debug)
+          echo "Loaded $service Class from $classFile\n";
         
         $className = "Fr\\DiffSocket\\Service\\" . self::getClassName($classFile);
         $this->obj[$service] = new $className;
@@ -49,6 +46,9 @@ class Server implements MessageComponentInterface {
       $this->obj[$service]->onOpen($conn);
       
       $this->clients[$conn->resourceId] = $conn;
+      if($this->debug)
+        echo "New connection! - " . $conn->resourceId;
+      
       return true;
     }else{
       $conn->close();
