@@ -26,8 +26,8 @@ class Server implements MessageComponentInterface {
   public function __construct($config){
     $this->debug = $config["debug"];
   }
-	
-	public function onOpen(ConnectionInterface $conn) {
+  
+  public function onOpen(ConnectionInterface $conn) {
     $service = $this->getService($conn);
     if($service !== null){
       $classFile = self::$services[$service];
@@ -52,36 +52,36 @@ class Server implements MessageComponentInterface {
       $conn->close();
       return false;
     }
-	}
+  }
 
-	public function onMessage(ConnectionInterface $conn, $data) {
+  public function onMessage(ConnectionInterface $conn, $data) {
     $service = $this->getService($conn);
     return $service !== null ? $this->obj[$service]->onMessage($conn, $data) : "";
-	}
+  }
 
-	public function onClose(ConnectionInterface $conn) {
-		$service = $this->getService($conn);
+  public function onClose(ConnectionInterface $conn) {
+    $service = $this->getService($conn);
     
     if(isset($this->clients[$conn->resourceId])){
-			unset($this->clients[$conn->resourceId]);
-		}
+      unset($this->clients[$conn->resourceId]);
+    }
     
     if($service !== null){
       return $this->obj[$service]->onClose($conn);
     }
-	}
+  }
 
-	public function onError(ConnectionInterface $conn, \Exception $e) {
-		$service = $this->getService($conn);
+  public function onError(ConnectionInterface $conn, \Exception $e) {
+    $service = $this->getService($conn);
     
     if(isset($this->clients[$conn->resourceId])){
-			unset($this->clients[$conn->resourceId]);
-		}
+      unset($this->clients[$conn->resourceId]);
+    }
     
     if($service !== null){
       return $this->obj[$service]->onError($conn, $e);
     }
-	}
+  }
   
   /**
    * Return service if it's valid, else NULL
