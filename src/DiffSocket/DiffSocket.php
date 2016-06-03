@@ -15,7 +15,8 @@ class DiffSocket{
       "host" => "127.0.0.1",
       "port" => "9000"
     ),
-    "services" => array()
+    "services" => array(),
+    "debug" => false
   );
 
   /**
@@ -58,7 +59,7 @@ class DiffSocket{
     $server = IoServer::factory(
       new HttpServer(
         new WsServer(
-          new \Fr\DiffSocket\Server()
+          new \Fr\DiffSocket\Server($this->config)
         )
       ),
       $port,

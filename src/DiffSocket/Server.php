@@ -20,6 +20,12 @@ class Server implements MessageComponentInterface {
    * Array of connected clients' ConnectionInterface Object
    */
   public $clients = array();
+  
+  public $debug = false;
+  
+  public function __construct($config){
+    $this->debug = $config["debug"];
+  }
 	
 	public function onOpen(ConnectionInterface $conn) {
     $this->getService($conn);
@@ -27,6 +33,12 @@ class Server implements MessageComponentInterface {
     $service = $this->getService($conn);
     if($service !== null){
       $classFile = self::$services[$service];
+      
+      /**
+       * Remove already existing object for debugging
+       */
+      if($this->debug && isset($this->obj[$service]))
+        unset($this->obj[$service]);
       
       if(!isset($this->obj[$service])){
         require_once $classFile;
