@@ -28,8 +28,6 @@ class Server implements MessageComponentInterface {
   }
 	
 	public function onOpen(ConnectionInterface $conn) {
-    $this->getService($conn);
-    
     $service = $this->getService($conn);
     if($service !== null){
       $classFile = self::$services[$service];
