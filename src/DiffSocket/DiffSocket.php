@@ -56,12 +56,16 @@ class DiffSocket{
     $ip = $this->config['server']['host'];
     $port = $this->config['server']['port'];
 
+    $ws_server = new WsServer(new \Fr\DiffSocket\Server());
+    
+    if(isset($this->config['origincheck']) 
+        && isset( $this->config['origincheck']['allowedOrigins'])){
+        $ws_server = new OriginCheck($ws_server);
+        $ws_server->allowedOrigins = $this->config['origincheck']['allowedOrigins'];
+    }
+    
     $server = IoServer::factory(
-      new HttpServer(
-        new WsServer(
-          new \Fr\DiffSocket\Server($this->config)
-        )
-      ),
+      new HttpServer($ws_server),
       $port,
       $ip
     );
