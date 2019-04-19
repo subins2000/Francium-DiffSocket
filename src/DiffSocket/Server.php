@@ -87,7 +87,12 @@ class Server implements MessageComponentInterface {
    * Return service if it's valid, else NULL
    */
   public function getService(ConnectionInterface $conn){
-    $query = $conn->WebSocket->request->getQuery();
+    $uri_query = $conn->httpRequest->getUri()->getQuery();
+    if ( is_string( $uri_query ) ) {
+    	parse_str( $uri_query, $query );
+    } else {
+    	$query = $uri_query;
+    }
     return isset(self::$services[$query["service"]]) ? $query["service"] : null;
   }
   
